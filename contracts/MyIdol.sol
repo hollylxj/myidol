@@ -33,6 +33,43 @@ contract MyIdol is Ownable {
     constructor() public {
     	// idols[1].idolName = "ChingChong";
     	idols[1].idolName = "孟美岐";
+		idols[2].idolName = "杨超越";
+		idols[3].idolName = "吴宣仪";
+		idols[4].idolName = "yamy";
+		idols[5].idolName = "段奥娟";
+		idols[6].idolName = "李紫婷";
+		idols[7].idolName = "紫宁";
+		idols[8].idolName = "杨芸晴";
+		idols[9].idolName = "傅菁";
+		idols[10].idolName = "强东玥";
+		idols[11].idolName = "高秋梓";
+		idols[12].idolName = "高颖浠";
+		idols[13].idolName = "李子璇";
+		idols[14].idolName = "赖美云";
+		idols[15].idolName = "刘人语";
+		idols[16].idolName = "徐梦洁";
+		idols[17].idolName = "戚砚笛";
+		idols[18].idolName = "赵尧珂";
+		idols[19].idolName = "陈芳语";
+		idols[20].idolName = "吕小雨";
+		idols[21].idolName = "王莫涵";
+		idols[22].idolName = "焦曼婷";
+		idols[23].idolName = "王菊";
+		idols[24].idolName = "吴芊盈";
+		idols[25].idolName = "蒋申";
+		idols[26].idolName = "吴映香";
+		idols[27].idolName = "魏瑾";
+		idols[28].idolName = "鹿小草";
+		idols[29].idolName = "苏芮琪";
+		idols[30].idolName = "罗怡恬";
+		idols[31].idolName = "许靖韵";
+		idols[32].idolName = "罗奕佳";
+		idols[33].idolName = "范薇";
+		idols[34].idolName = "王婷";
+		idols[35].idolName = "陈意涵";
+		idols[36].idolName = "刘丹萌";
+
+
 
     }
 
@@ -202,4 +239,4 @@ contract MyIdol is Ownable {
 	}
 
 
-}
+}";
