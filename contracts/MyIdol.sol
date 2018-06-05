@@ -26,12 +26,14 @@ contract MyIdol is Ownable {
     uint256 ownerCut = 50; //in percent
     uint256 initialIdolValue = 1 finney; //1 milliether
 
-    Idol[102] idols;	//0-th idol is invalid. Only 1-101 are valid.
+    Idol[37] idols;	//0-th idol is invalid. Only 1-36 are valid.
 
     /*** CONSTRUCTOR ***/
 
     constructor() public {
-    	idols[1].idolName = "ChingChong";
+    	// idols[1].idolName = "ChingChong";
+    	idols[1].idolName = "孟美岐";
+
     }
 
     /*** MODIFIERS ***/
@@ -91,12 +93,12 @@ contract MyIdol is Ownable {
     	public
     	view
     	returns (
-    	uint256[101] idolIds,
-    	bytes32[101] idolNames,
-    	bytes32[101] ownerNames,
-    	address[101] ownerAddresses,
-    	uint256[101] values,
-    	uint256[101] sellPrices
+    	uint256[36] idolIds,
+    	bytes32[36] idolNames,
+    	bytes32[36] ownerNames,
+    	address[36] ownerAddresses,
+    	uint256[36] values,
+    	uint256[36] sellPrices
     ) {
     		for(uint256 i = 0; i < idols.length - 1; i++){
     			Idol memory idol  = idols[i + 1];

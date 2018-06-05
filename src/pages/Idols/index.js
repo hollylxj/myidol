@@ -41,26 +41,30 @@ export default class Idols extends React.Component {
             // this.setState({ChanCoreContract : instance});
             self.MyIdolContract = instance;
         }).then(() => {
+            var idols = [];
             self.MyIdolContract.totalSupply().then(numOfIdols => {
                 for(var i = 1; i <= numOfIdols; i++){
-                //for(var i = 1; i <= 1; i++){
-                    const idol = {};
-                    self.MyIdolContract.getIdol(i).then(idolData => {
-                        console.log(idolData);
-                        idol.id = i;
-                        idol.name = idolData[0];
-                        idol.ownerName = idolData[1];
-                        idol.ownerAddress = idolData[2];
-                        idol.value = this.state.web3.fromWei(idolData[3].toNumber(), "finney");
-                        idol.sellPrice = this.state.web3.fromWei(idolData[4].toNumber(), "finney");
-                        idol.url = "https://s3.amazonaws.com/cryptochans/" + i + ".jpg";
-                        this.state.fake_data.push(idol);
-                    }).then( () => {
-                        console.log(idol);
-                        //self.setState({fake_data:self.state.fake_data.concat([idol])});
-                    });
+                    (function(id, web3){
+                        const idol = {};
+                        self.MyIdolContract.getIdol(id).then(idolData => {
+                            idol.id = id;
+                            idol.name = idolData[0];
+                            idol.ownerName = idolData[1];
+                            idol.ownerAddress = idolData[2];
+                            idol.value = web3.fromWei(idolData[3].toNumber(), "finney");
+                            idol.sellPrice = web3.fromWei(idolData[4].toNumber(), "finney");
+                            //idol.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
+                            idol.url = "1.png";
+                            idols.push(idol);
+                        }).then( () => {
+                            //console.log(idol);
+                            //self.setState({fake_data:self.state.fake_data.concat([idol])});
+                        });
+
+                    })(i, this.state.web3);    
                 }
             });
+            self.setState({fake_data:idols});
             /*self.MyIdolContract.getIdols().then(idols => {
                 console.log('Total Idols:', idols.length);
 
@@ -108,10 +112,11 @@ export default class Idols extends React.Component {
     buy(idol_id){
         console.log(idol_id);
         self = this;
+        var ownerName = "Owner Name"; //temporary
 
         this.MyIdolContract.getIdol(idol_id).then(priceInWei => {
           console.log("Price:"+priceInWei/1000000000000000+" (milliETH)");
-          this.MyIdolContract.buyIdol.sendTransaction(idol_id, {
+          this.MyIdolContract.buyIdol.sendTransaction(idol_id, ownerName, {
             from:this.state.account,
             to:this.MyIdolContract.address,
             value:priceInWei,
@@ -171,8 +176,8 @@ export default class Idols extends React.Component {
                   <p>Id:{d.id}</p>
                   <p>Owner Name:{d.ownerName}</p>
                   <p>Owner Address:{d.ownerAdderss}</p>
-                  <p>Value:{d.value}</p>
-                  <p>Sell Price:{d.sellPrice}</p>
+                  <p>Value:{d.value} mETH</p>
+                  <p>Sell Price:{d.sellPrice} mETH</p>
                   <p>
                       <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
                           Buy!
