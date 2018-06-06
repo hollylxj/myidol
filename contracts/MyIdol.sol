@@ -165,6 +165,8 @@ contract MyIdol is Ownable {
     	   address(idol.ownerAddress).transfer(sellerProceeds);
         }
 
+
+}
     	//Update Idol parameters
     	idol.ownerName = _newOwnerName;
     	idol.ownerAddress = msg.sender;
