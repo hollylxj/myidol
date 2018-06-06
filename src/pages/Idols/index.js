@@ -3,7 +3,11 @@ import getWeb3 from '../../utils/getWeb3'
 
 import MyIdolContract from '../../../node_modules/myidol/build/contracts/MyIdol.json'
 
+<<<<<<< HEAD
 import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail, Tooltip, OverlayTrigger} from 'react-bootstrap';
+=======
+import {Badge, Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
+>>>>>>> 7a0217ffc7f375ea45cd22c6aea6b243c89e2e28
 
 export default class Idols extends React.Component {
     constructor(props) {
@@ -252,7 +256,6 @@ export default class Idols extends React.Component {
       }
       return <span><b>Owner</b> {ownername}</span>
     }
-
 
     return (
       <div>
