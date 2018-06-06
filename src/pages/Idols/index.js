@@ -244,7 +244,7 @@ export default class Idols extends React.Component {
     self=this;
 
     function tociclednumber(num) {
-      if (num < 0 || num > 50) {
+      if (num < 0 || num >= 50) {
         return num
       }
       return '⓪ ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪ ⑫ ⑬ ⑭ ⑮ ⑯ ⑰ ⑱ ⑲ ⑳ ㉑ ㉒ ㉓ ㉔ ㉕ ㉖ ㉗ ㉘ ㉙ ㉚ ㉛ ㉜ ㉝ ㉞ ㉟ ㊱ ㊲ ㊳ ㊴ ㊵ ㊶ ㊷ ㊸ ㊹ ㊺ ㊻ ㊼ ㊽ ㊾ ㊿'.split(' ')[num]
