@@ -11,6 +11,7 @@ export default class Idols extends React.Component {
 
        this.state = {
          admin: false,
+         isHover: [false]*100
        }
 
        // this.initialize();
@@ -59,6 +60,19 @@ export default class Idols extends React.Component {
                         }).then( () => {
                             console.log(idol);
                             self.setState({fake_data:self.state.fake_data.concat([idol])});
+
+                            self.state.fake_data.sort(function(a, b){
+    var keyA = a.value;
+    var keyB = b.value;
+    // Compare the 2 dates
+    if(keyA < keyB) return 1;
+    if(keyA > keyB) return -1;
+    return 0;
+});
+
+
+
+
                         });
 
                     })(i, this.state.web3);    
@@ -126,7 +140,7 @@ export default class Idols extends React.Component {
             value:priceInWei,
             gas:1000000
           }).then(result => {
-            alert("successful, you may need to wait for a while before the chan appear in MyChans");
+            alert("successful, you may need to wait for a while before you can see the update. It may fail because of concurrent transactions. The name of the buyer who win the bid will be shown. Transaction takes about 15 seconds to finish. Please refresh later.");
             //refresh page
           });
         });
@@ -163,6 +177,24 @@ export default class Idols extends React.Component {
     this.setState({ownerName: event.target.value});
   }
 
+  mouseOver(i) {
+    return () => {
+      if (this.state.isHover[i] === true) {
+        return this.state;
+      }
+      let isHover = [...this.state.isHover]
+      isHover[i] = true;
+      this.setState({ ...this.state, isHover });
+    }
+  }
+
+  mouseExit() {
+    if (this.state.isHover === false) {
+      return this.state;
+    }
+    this.setState({ ...this.state, isHover: false });
+  }
+
 
 
   render() {
@@ -191,9 +223,10 @@ export default class Idols extends React.Component {
                 return (<Col xs={6} md={4}>
                   <Thumbnail src={require("../../101/"+d.id+".png")} alt="Image not available" style={tstyle}>
                   <h3>Name:{d.name}</h3>
-                  <p>Id:{d.id}</p>
+                  <p>Rank:{idx+1}</p>
                   <p>Owner Name: {d.ownerName}</p>
-                  <p>Owner Address: {d.ownerAddress}</p>
+                  <div onMouseOver={self.mouseOver(idx).bind(self)}
+              onMouseLeave={self.mouseExit.bind(self)} isHover={self.state.isHover[idx]} >{self.state.isHover[idx]? d.ownerAddress:<p>Owner Address</p>}</div>
                   <p>Value: {d.value} mETH</p>
                   <p>Sell Price: {d.sellPrice} mETH</p>
                   <p>

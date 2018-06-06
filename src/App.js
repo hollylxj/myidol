@@ -99,31 +99,52 @@ class App extends Component {
 
   }
 
+
+
   render() {
 
     let AdminDisplay = this.state.admin?        
           <Link to="/produce101/admin"><Button bsStyle="info">Admin</Button></Link>:null;
 
+
+    let jstyle={
+      'background-color':"pink"
+    }
+
+    let istyle={
+      'width':'100px',
+      'height':'100px'
+    }
+
     return (
         <div>
-          <Router basename={'/myidol/'}>
+          <Router basename={'/produce101/'}>
             <div className="App">
+
+
+            <Jumbotron style={jstyle}>
+            <img style={istyle} src={require('./logo.jpg')}/>
+            <br/>
+            <br/>
+
+  <p>
+    Buy your favorite star and associate your name with your idol permanently on BlockChain! 
+  </p>
+            </Jumbotron>
+
+
+
               <header>
-                <img src={logo} className="App-logo" alt="logo.jpg" />
-                <h1 className="App-title">My Idol</h1>
               </header>
               <div>
-                <Link to="/produce101"><Button  bsStyle="info">Main Page</Button></Link>
-                &emsp;
-                <Link to="/produce101/idols"><Button  bsStyle="info">Idols</Button></Link> 
-                &emsp;
                 {AdminDisplay}
         
 
                 <Switch>
                   <Route path="/produce101/admin" render={(props) => <Admin {...props} contract={this.state.MyIdolInstance} />} />
                   <Route path="/produce101/idols" render={(props) => <Idols {...props} />} />
-                  <Route path="/" render={(props)=>
+                  <Route path="/" render={(props) => <Idols {...props} />} />
+                  <Route path="/no" render={(props)=>
                     <Grid>
                       <Col xs={14} md={20}>
                         <Row xs={10} md={10}>
