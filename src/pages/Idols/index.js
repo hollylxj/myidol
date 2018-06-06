@@ -170,7 +170,8 @@ export default class Idols extends React.Component {
     const account = this.state.account;
 
         const tstyle={
-      'box-shadow':'0px 0px 10px #000'
+      'box-shadow':'0px 0px 10px #000',
+      'height':'700px'
     }
 
      const bstyle={
@@ -197,7 +198,9 @@ export default class Idols extends React.Component {
                   <p>Sell Price: {d.sellPrice} mETH</p>
                   <p>
                     <input placeholder="Your name" id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
-                      <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
+                    <br/>
+                    <br/>
+                      <Button style={bstyle} onClick={buy_func.bind(null,d.id)}>
                           Buy!
                       </Button>
                   </p>
