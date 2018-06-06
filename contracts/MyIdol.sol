@@ -241,4 +241,4 @@ contract MyIdol is Ownable {
 	}
 
 
-}";
+}

@@ -171,7 +171,7 @@ export default class Idols extends React.Component {
             <Row>
               {this.state.fake_data.map(function(d, idx){
                 return (<Col xs={6} md={4}>
-                  <Thumbnail src={d.url} alt="Image not available">
+                  <Thumbnail src={require("./1.png")} alt="Image not available">
                   <h3>Name:{d.name}</h3>
                   <p>Id:{d.id}</p>
                   <p>Owner Name:{d.ownerName}</p>
