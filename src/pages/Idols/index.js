@@ -116,8 +116,8 @@ export default class Idols extends React.Component {
 
         this.MyIdolContract.getIdol(idol_id).then(idolData => {
           console.log(idolData);
-          const priceInWei = this.state.web3.fromWei(idolData[4].toNumber(), "finney");
-          console.log("Price:"+priceInWei/1000000000000000+" (milliETH)");
+          const priceInWei = idolData[4].toNumber();
+          console.log("Price:"+this.state.web3.fromWei(priceInWei, "finney")+" (milliETH)");
           this.MyIdolContract.buyIdol.sendTransaction(idol_id, ownerName, {
             from:this.state.account,
             to:this.MyIdolContract.address,
@@ -172,10 +172,10 @@ export default class Idols extends React.Component {
                   <Thumbnail src={require("../../101/"+d.id+".png")} alt="Image not available">
                   <h3>Name:{d.name}</h3>
                   <p>Id:{d.id}</p>
-                  <p>Owner Name:{d.ownerName}</p>
-                  <p>Owner Address:{d.ownerAdderss}</p>
-                  <p>Value:{d.value} mETH</p>
-                  <p>Sell Price:{d.sellPrice} mETH</p>
+                  <p>Owner Name: {d.ownerName}</p>
+                  <p>Owner Address: {d.ownerAddress}</p>
+                  <p>Value: {d.value} mETH</p>
+                  <p>Sell Price: {d.sellPrice} mETH</p>
                   <p>
                       <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
                           Buy!

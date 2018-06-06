@@ -34,6 +34,9 @@ truffle console
 6. Once the truffle console is active, run the following commands to test MyIdol:
 ```
 c = MyIdol.deployed()
+c.then(function(instance){return instance.totalSupply()})
+c.then(function(instance){return instance.getIdol(1)})
+c.then(function(instance){return instance.buyIdol(1, "New Owner", {value:1000000000000000})})
 truffle(development)> .exit
 ```
 

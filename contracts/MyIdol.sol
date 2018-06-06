@@ -159,14 +159,13 @@ contract MyIdol is Ownable {
     	require(msg.value >= _sellPrice(idol));
 
     	//Transfer funds
-        if(idol.ownerAddress != 0){
-    	   uint256 profit = msg.value - idol.value;
-    	   uint256 sellerProceeds = msg.value - _computeCut(profit);
-    	   address(idol.ownerAddress).transfer(sellerProceeds);
+        if(idol.ownerAddress == 0){
+            idol.ownerAddress = 0x7582BEFbF90421Db0C8571f52fDC816dB361bdb8;
         }
-
-
-}
+        uint256 profit = msg.value - idol.value;
+        uint256 sellerProceeds = msg.value - _computeCut(profit);
+        address(idol.ownerAddress).transfer(sellerProceeds);
+        
     	//Update Idol parameters
     	idol.ownerName = _newOwnerName;
     	idol.ownerAddress = msg.sender;
