@@ -90,6 +90,36 @@ class App extends Component {
       });
 
     })
+
+
+
+          this.state.web3.version.getNetwork((err, netId) => {
+      switch (netId) {
+        case "1":
+          console.log('This is mainnet')
+          this.setState({eth_detect:true});
+          break
+        case "2":
+          console.log('This is the deprecated Morden test network.')
+          this.setState({eth_detect:false});
+          break
+        case "3":
+          console.log('This is the ropsten test network.')
+          this.setState({eth_detect:false});
+          break
+        case "4":
+          this.setState({eth_detect:false});
+          console.log('This is the Rinkeby test network.')
+          break
+        case "42":
+          console.log('This is the Kovan test network.')
+          this.setState({eth_detect:false});
+          break
+        default:
+          console.log('This is an unknown network.')
+          this.setState({eth_detect:false});
+      }
+    })
   }
 
   change(){
@@ -116,19 +146,25 @@ class App extends Component {
       'height':'100px'
     }
 
+     let eth_detect = this.state.eth_detect?"./on.png":"./off.png";
+
+     var any_alert = this.state.eth_detect?null:<Alert bsStyle="warning">
+  <strong>Please use Main Ethereum network!</strong></Alert>;
+
+
     return (
         <div>
           <Router basename={'/produce101/'}>
             <div className="App">
 
-
+             {any_alert} 
             <Jumbotron style={jstyle}>
             <img style={istyle} src={require('./logo.jpg')}/>
             <br/>
             <br/>
 
   <p>
-    Buy your favorite star and associate your name with your idol permanently on BlockChain! 
+    Associate your name with your idol permanently on BlockChain! 
   </p>
             </Jumbotron>
 

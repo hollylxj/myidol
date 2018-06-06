@@ -3,11 +3,9 @@ import getWeb3 from '../../utils/getWeb3'
 
 import MyIdolContract from '../../../node_modules/myidol/build/contracts/MyIdol.json'
 
-<<<<<<< HEAD
+
 import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail, Tooltip, OverlayTrigger} from 'react-bootstrap';
-=======
-import {Badge, Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
->>>>>>> 7a0217ffc7f375ea45cd22c6aea6b243c89e2e28
+
 
 export default class Idols extends React.Component {
     constructor(props) {
@@ -207,7 +205,7 @@ export default class Idols extends React.Component {
 
     const tstyle={
       'box-shadow':'0px 0px 10px #000',
-      'height':'590px',
+      'height':'610px',
     }
 
      const bstyle={
@@ -252,9 +250,9 @@ export default class Idols extends React.Component {
 
     function computeowner(ownername) {
       if (ownername == null || ownername === '') {
-        return <b>No owner</b>
+        return <b>No Guardian</b>
       }
-      return <span><b>Owner</b> {ownername}</span>
+      return <span><b>Guardian</b> {ownername}</span>
     }
 
     return (
@@ -286,7 +284,7 @@ export default class Idols extends React.Component {
 
                   <div style={centerbuttonouter}>
                       <Button style={bstyle} onClick={buy_func.bind(null,d.id)}>
-                          Buy!
+                          Guard
                       </Button>
                   </div>
 
