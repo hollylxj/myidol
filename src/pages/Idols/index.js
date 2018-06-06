@@ -34,12 +34,12 @@ export default class Idols extends React.Component {
         const myIdol = contract(MyIdolContract);
 
         //Set Web3 Providers
-        myIdol.setProvider(this.state.web3.currentProvider);
+        myIdol.setProvider(self.state.web3.currentProvider);
 
-        myIdol.deployed().then((instance) => {
+        myIdol.deployed().then(async (instance) => {
             console.log("Successfully deployed MyIdol");
             // this.setState({ChanCoreContract : instance});
-            self.MyIdolContract = instance;
+            self.MyIdolContract = await instance;
         }).then(() => {
             var idols = [];
             self.MyIdolContract.totalSupply().then(numOfIdols => {
@@ -110,6 +110,8 @@ export default class Idols extends React.Component {
 
 
     buy(idol_id){
+      self=this;
+      console.log(this.state.ownerName);
         console.log(idol_id);
         self = this;
         var ownerName = "Owner Name"; //temporary
@@ -118,7 +120,7 @@ export default class Idols extends React.Component {
           console.log(idolData);
           const priceInWei = idolData[4].toNumber();
           console.log("Price:"+this.state.web3.fromWei(priceInWei, "finney")+" (milliETH)");
-          this.MyIdolContract.buyIdol.sendTransaction(idol_id, ownerName, {
+          this.MyIdolContract.buyIdol.sendTransaction(idol_id, self.state.ownerName, {
             from:this.state.account,
             to:this.MyIdolContract.address,
             value:priceInWei,
@@ -135,30 +137,47 @@ export default class Idols extends React.Component {
     componentWillMount() {
         const self=this;
 
+  self.setState({fake_data:[]});
         getWeb3
-        .then(results => {
-          this.setState({
+        .then(async results => {
+          await this.setState({
             web3: results.web3
           });
           // Get accounts.
           results.web3.eth.getAccounts((error, accounts) => {
             this.setState({account:accounts[0]});
-          });
-
-          this.instantiateContract();        
+          });        
+        }).then(()=>{
+          this.instantiateContract();
         })
 
-        self.setState({fake_data:[]});
+      
 
 
 
     }
 
 
+      handleNameChange(event){
+    console.log(event.target.value);
+    this.setState({ownerName: event.target.value});
+  }
+
+
 
   render() {
     const buy_func = this.buy.bind(this);
     const account = this.state.account;
+
+        const tstyle={
+      'box-shadow':'0px 0px 10px #000'
+    }
+
+     const bstyle={
+        'background-color':'pink'
+    };
+
+    self=this;
 
 
     return (
@@ -169,7 +188,7 @@ export default class Idols extends React.Component {
             <Row>
               {this.state.fake_data.map(function(d, idx){
                 return (<Col xs={6} md={4}>
-                  <Thumbnail src={require("../../101/"+d.id+".png")} alt="Image not available">
+                  <Thumbnail src={require("../../101/"+d.id+".png")} alt="Image not available" style={tstyle}>
                   <h3>Name:{d.name}</h3>
                   <p>Id:{d.id}</p>
                   <p>Owner Name: {d.ownerName}</p>
@@ -177,6 +196,7 @@ export default class Idols extends React.Component {
                   <p>Value: {d.value} mETH</p>
                   <p>Sell Price: {d.sellPrice} mETH</p>
                   <p>
+                    <input placeholder="Your name" id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
                       <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
                           Buy!
                       </Button>
