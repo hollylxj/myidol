@@ -7,6 +7,7 @@ import MyIdolContract from '../../../node_modules/myidol/build/contracts/MyIdol.
 import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail, Tooltip, OverlayTrigger} from 'react-bootstrap';
 
 
+
 export default class Idols extends React.Component {
     constructor(props) {
        super(props)
