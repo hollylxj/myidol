@@ -3,7 +3,7 @@ import getWeb3 from '../../utils/getWeb3'
 
 import MyIdolContract from '../../../node_modules/myidol/build/contracts/MyIdol.json'
 
-import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
+import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail, Tooltip, OverlayTrigger} from 'react-bootstrap';
 
 export default class Idols extends React.Component {
     constructor(props) {
@@ -201,16 +201,57 @@ export default class Idols extends React.Component {
     const buy_func = this.buy.bind(this);
     const account = this.state.account;
 
-        const tstyle={
+    const tstyle={
       'box-shadow':'0px 0px 10px #000',
-      'height':'700px'
+      'height':'590px',
     }
 
      const bstyle={
-        'background-color':'pink'
-    };
+        'background-color':'pink',
+        'text-align': 'center',
+        'display': 'inline-block',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
+      };
+
+    const tooltiptext = {
+      'width': '120px',
+      'top': '100%',
+      'left': '50%',
+      'margin-left': '-60px',
+    }
+
+    const bodystyleouter = {
+      'width': '100%'
+    }
+
+    const centerbuttonouter = {
+      'width': '100%',
+      'text-align': 'center',
+    }
+
+    const bodystyle = {
+      'display': 'inline-block',
+      'text-align': 'left',
+      'margin-left': 'auto',
+      'margin-right': 'auto',
+    }
 
     self=this;
+
+    function tociclednumber(num) {
+      if (num < 0 || num > 50) {
+        return num
+      }
+      return '⓪ ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪ ⑫ ⑬ ⑭ ⑮ ⑯ ⑰ ⑱ ⑲ ⑳ ㉑ ㉒ ㉓ ㉔ ㉕ ㉖ ㉗ ㉘ ㉙ ㉚ ㉛ ㉜ ㉝ ㉞ ㉟ ㊱ ㊲ ㊳ ㊴ ㊵ ㊶ ㊷ ㊸ ㊹ ㊺ ㊻ ㊼ ㊽ ㊾ ㊿'.split(' ')[num]
+    }
+
+    function computeowner(ownername) {
+      if (ownername == null || ownername === '') {
+        return <b>No owner</b>
+      }
+      return <span><b>Owner</b> {ownername}</span>
+    }
 
 
     return (
@@ -220,23 +261,34 @@ export default class Idols extends React.Component {
           <Grid>
             <Row>
               {this.state.fake_data.map(function(d, idx){
+                const tooltip = (
+                  <Tooltip id="tooltip">
+                    <strong>Address</strong> {d.ownerAddress}
+                  </Tooltip>
+                );
                 return (<Col xs={6} md={4}>
                   <Thumbnail src={require("../../101/"+d.id+".png")} alt="Image not available" style={tstyle}>
-                  <h3>Name:{d.name}</h3>
-                  <p>Rank:{idx+1}</p>
-                  <p>Owner Name: {d.ownerName}</p>
-                  <div onMouseOver={self.mouseOver(idx).bind(self)}
-              onMouseLeave={self.mouseExit.bind(self)} isHover={self.state.isHover[idx]} >{self.state.isHover[idx]? d.ownerAddress:<p>Owner Address</p>}</div>
-                  <p>Value: {d.value} mETH</p>
-                  <p>Sell Price: {d.sellPrice} mETH</p>
+                  <h3><b>{tociclednumber(idx+1)}</b> {d.name}</h3>
+                  <div style={bodystyleouter}>
+                  <div style={bodystyle}>
+                  
+                  <OverlayTrigger placement="bottom" overlay={tooltip}>
+                    <p>{computeowner(d.ownerName)}</p>
+                  </OverlayTrigger>
+                  <p><b>Value</b> {d.value} mETH</p>
+                  <p><b>Sell Price</b> {d.sellPrice} mETH</p>
                   <p>
                     <input placeholder="Your name" id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
-                    <br/>
-                    <br/>
+                  </p>
+
+                  <div style={centerbuttonouter}>
                       <Button style={bstyle} onClick={buy_func.bind(null,d.id)}>
                           Buy!
                       </Button>
-                  </p>
+                  </div>
+
+                  </div>
+                  </div>
                   </Thumbnail>
                 </Col>)
               })}
