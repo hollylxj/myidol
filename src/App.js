@@ -102,7 +102,7 @@ class App extends Component {
   render() {
 
     let AdminDisplay = this.state.admin?        
-          <Link to="/admin"><Button bsStyle="info">Admin</Button></Link>:null;
+          <Link to="/produce101/admin"><Button bsStyle="info">Admin</Button></Link>:null;
 
     return (
         <div>
@@ -113,16 +113,16 @@ class App extends Component {
                 <h1 className="App-title">My Idol</h1>
               </header>
               <div>
-                <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
+                <Link to="/produce101"><Button  bsStyle="info">Main Page</Button></Link>
                 &emsp;
-                <Link to="/idols"><Button  bsStyle="info">Idols</Button></Link> 
+                <Link to="/produce101/idols"><Button  bsStyle="info">Idols</Button></Link> 
                 &emsp;
                 {AdminDisplay}
         
 
                 <Switch>
-                  <Route path="/admin" render={(props) => <Admin {...props} contract={this.state.MyIdolInstance} />} />
-                  <Route path="/idols" render={(props) => <Idols {...props} />} />
+                  <Route path="/produce101/admin" render={(props) => <Admin {...props} contract={this.state.MyIdolInstance} />} />
+                  <Route path="/produce101/idols" render={(props) => <Idols {...props} />} />
                   <Route path="/" render={(props)=>
                     <Grid>
                       <Col xs={14} md={20}>

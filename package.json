@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "proxy": "http://localhost:3001/",
-  "homepage": "https://dapps.stanford.edu/myidol",
+  "homepage": "https://dapps.stanford.edu/produce101",
   "devDependencies": {
     "autoprefixer": "6.5.1",
     "babel-core": "6.17.0",
