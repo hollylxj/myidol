@@ -3,7 +3,7 @@ import getWeb3 from '../../utils/getWeb3'
 
 import MyIdolContract from '../../../node_modules/myidol/build/contracts/MyIdol.json'
 
-import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
+import {Badge, Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
 
 export default class Idols extends React.Component {
     constructor(props) {
@@ -212,6 +212,10 @@ export default class Idols extends React.Component {
 
     self=this;
 
+    const divstyle={
+      'align':'left'
+    };
+
 
     return (
       <div>
@@ -222,13 +226,15 @@ export default class Idols extends React.Component {
               {this.state.fake_data.map(function(d, idx){
                 return (<Col xs={6} md={4}>
                   <Thumbnail src={require("../../101/"+d.id+".png")} alt="Image not available" style={tstyle}>
-                  <h3>Name:{d.name}</h3>
-                  <p>Rank:{idx+1}</p>
-                  <p>Owner Name: {d.ownerName}</p>
+                  <h3>{d.name}</h3>
+                  <div style={divstyle}>
+                  <p><strong>Rank</strong><Badge style={bstyle}>{idx+1}</Badge></p>
+                  <p><strong>Owner Name</strong>  {d.ownerName}</p>
                   <div onMouseOver={self.mouseOver(idx).bind(self)}
-              onMouseLeave={self.mouseExit.bind(self)} isHover={self.state.isHover[idx]} >{self.state.isHover[idx]? d.ownerAddress:<p>Owner Address</p>}</div>
-                  <p>Value: {d.value} mETH</p>
-                  <p>Sell Price: {d.sellPrice} mETH</p>
+              onMouseLeave={self.mouseExit.bind(self)} isHover={self.state.isHover[idx]} >{self.state.isHover[idx]? d.ownerAddress:<p><strong>Owner Address</strong></p>}</div>
+                  <p><strong>Value</strong> {d.value} mETH</p>
+                  <p><strong>Sell Price</strong> {d.sellPrice} mETH</p>
+                  </div>
                   <p>
                     <input placeholder="Your name" id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
                     <br/>
