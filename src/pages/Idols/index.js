@@ -54,17 +54,17 @@ export default class Idols extends React.Component {
                             idol.value = web3.fromWei(idolData[3].toNumber(), "finney");
                             idol.sellPrice = web3.fromWei(idolData[4].toNumber(), "finney");
                             //idol.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
-                            idol.url = "1.png";
+                            // idol.url = "1.png";
                             idols.push(idol);
                         }).then( () => {
-                            //console.log(idol);
-                            //self.setState({fake_data:self.state.fake_data.concat([idol])});
+                            console.log(idol);
+                            self.setState({fake_data:self.state.fake_data.concat([idol])});
                         });
 
                     })(i, this.state.web3);    
                 }
             });
-            self.setState({fake_data:idols});
+            // self.setState({fake_data:idols});
             /*self.MyIdolContract.getIdols().then(idols => {
                 console.log('Total Idols:', idols.length);
 
@@ -114,7 +114,9 @@ export default class Idols extends React.Component {
         self = this;
         var ownerName = "Owner Name"; //temporary
 
-        this.MyIdolContract.getIdol(idol_id).then(priceInWei => {
+        this.MyIdolContract.getIdol(idol_id).then(idolData => {
+          console.log(idolData);
+          const priceInWei = this.state.web3.fromWei(idolData[4].toNumber(), "finney");
           console.log("Price:"+priceInWei/1000000000000000+" (milliETH)");
           this.MyIdolContract.buyIdol.sendTransaction(idol_id, ownerName, {
             from:this.state.account,
@@ -122,7 +124,6 @@ export default class Idols extends React.Component {
             value:priceInWei,
             gas:1000000
           }).then(result => {
-
             alert("successful, you may need to wait for a while before the chan appear in MyChans");
             //refresh page
           });
@@ -151,9 +152,6 @@ export default class Idols extends React.Component {
 
 
 
-        // self.setState({fake_data:data});
-
-
     }
 
 
@@ -171,7 +169,7 @@ export default class Idols extends React.Component {
             <Row>
               {this.state.fake_data.map(function(d, idx){
                 return (<Col xs={6} md={4}>
-                  <Thumbnail src={require("./1.png")} alt="Image not available">
+                  <Thumbnail src={require("../../101/"+d.id+".png")} alt="Image not available">
                   <h3>Name:{d.name}</h3>
                   <p>Id:{d.id}</p>
                   <p>Owner Name:{d.ownerName}</p>
