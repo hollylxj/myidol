@@ -73,6 +73,7 @@ class App extends Component {
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
       console.log(accounts);
+
       console.log({userAccount: accounts[0]});
       this.setState({account:accounts[0]});
 
@@ -122,14 +123,6 @@ class App extends Component {
     })
   }
 
-  change(){
-
-
-
-
-  }
-
-
 
   render() {
 
@@ -146,28 +139,48 @@ class App extends Component {
       'height':'100px'
     }
 
-     let eth_detect = this.state.eth_detect?"./on.png":"./off.png";
+    const pStyle = {
+      'color': '#f4428c',
+    };
+
+    const imgStyle={
+      'width':'30px',
+      'height':'30px'
+    };
+
+
+let eth_detect = this.state.eth_detect?"./on.jpg":"./off.jpg";
 
      var any_alert = this.state.eth_detect?null:<Alert bsStyle="warning">
-  <strong>Please use Main Ethereum network!</strong></Alert>;
+  <strong>Warning:请使用以太坊主网络</strong></Alert>;
 
 
     return (
+
         <div>
+        <span style={pStyle} >地址: {this.state.account}</span>
           <Router basename={'/produce101/'}>
             <div className="App">
 
              {any_alert} 
+             
+        
+        
             <Jumbotron style={jstyle}>
             <img style={istyle} src={require('./logo.jpg')}/>
             <br/>
             <br/>
 
-  <p>
-    Associate your name with your idol permanently on BlockChain! 
-  </p>
-            </Jumbotron>
 
+  <p>
+    
+  </p>
+
+  <p>
+    你的创始人身份，由区块链永远守护
+  </p>
+
+            </Jumbotron>
 
 
               <header>

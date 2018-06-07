@@ -4,7 +4,7 @@ import getWeb3 from '../../utils/getWeb3'
 import MyIdolContract from '../../../node_modules/myidol/build/contracts/MyIdol.json'
 
 
-import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail, Tooltip, OverlayTrigger} from 'react-bootstrap';
+import {Modal, Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail, Tooltip, OverlayTrigger} from 'react-bootstrap';
 
 
 
@@ -14,14 +14,10 @@ export default class Idols extends React.Component {
 
        this.state = {
          admin: false,
-         isHover: [false]*100
+         isHover: [false]*100,
+         show:false
        }
-
-       // this.initialize();
-
     }
-
-
 
     instantiateContract() {
         self= this;
@@ -57,21 +53,18 @@ export default class Idols extends React.Component {
                             idol.ownerAddress = idolData[2];
                             idol.value = web3.fromWei(idolData[3].toNumber(), "finney");
                             idol.sellPrice = web3.fromWei(idolData[4].toNumber(), "finney");
-                            //idol.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
-                            // idol.url = "1.png";
                             idols.push(idol);
                         }).then( () => {
                             console.log(idol);
                             self.setState({fake_data:self.state.fake_data.concat([idol])});
-
                             self.state.fake_data.sort(function(a, b){
-    var keyA = a.value;
-    var keyB = b.value;
-    // Compare the 2 dates
-    if(keyA < keyB) return 1;
-    if(keyA > keyB) return -1;
-    return 0;
-});
+                            var keyA = a.value;
+                            var keyB = b.value;
+                            // Compare the 2 dates
+                            if(keyA < keyB) return 1;
+                            if(keyA > keyB) return -1;
+                            return 0;
+                        });
 
 
 
@@ -81,54 +74,19 @@ export default class Idols extends React.Component {
                     })(i, this.state.web3);    
                 }
             });
-            // self.setState({fake_data:idols});
-            /*self.MyIdolContract.getIdols().then(idols => {
-                console.log('Total Idols:', idols.length);
-
-                idols.foreach(idol => {
-                    console.log(idol);
-                });
-
-                // for(const i = 0; i < totalChans+1; i++){
-                //     console.log(i);
-
-                //     const id=i;
-
-                //     const chan = {};
-                //     self.ChanCoreContract.getChan(id).then( chanData => {
-                //     console.log(id);
-                //       chan.id = id;
-                //       chan.name = chanData[0];
-                //       chan.create_time = chanData[1].c[0];
-                //       chan.level = chanData[2].c[0];
-                //       chan.gender = chanData[3] ? "female" : "male";
-                //       chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
-                //     }).then( () => {
-                //       console.log(chan);
-                //       self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
-                //         chan.seller           = auctionData[0];
-                //         chan.starting_price   = auctionData[1];
-                //         chan.ending_price     = auctionData[2];
-                //         chan.auction_duration = auctionData[3];
-                //         chan.started_at       = auctionData[4];
-                //       });
-                //     }).then( () => {
-                //       self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
-                //         chan.current_price = price/1000000000000000+" (milliETH)";
-                //         console.log(chan);
-                //       self.setState({fake_data:self.state.fake_data.concat([chan])});
-                //       });
-                //     });
-
-                // }
-            });*/
-        });
+        }).catch(()=>{
+          alert('找不到智能合约，请确认您在以太坊主网络上');
+        })
     }
 
 
     buy(idol_id){
       self=this;
       console.log(this.state.ownerName);
+      if(!this.state.ownerName){
+        alert("名字不能为空");
+        return ;
+      }
         console.log(idol_id);
         self = this;
         var ownerName = "Owner Name"; //temporary
@@ -145,7 +103,9 @@ export default class Idols extends React.Component {
           }).then(result => {
             alert("successful, you may need to wait for a while before you can see the update. It may fail because of concurrent transactions. The name of the buyer who win the bid will be shown. Transaction takes about 15 seconds to finish. Please refresh later.");
             //refresh page
-          });
+          }).catch(()=>{
+            alert("交易失败");
+          })
         });
     }
 
@@ -154,7 +114,7 @@ export default class Idols extends React.Component {
     componentWillMount() {
         const self=this;
 
-  self.setState({fake_data:[]});
+this.setState({fake_data:[]});
         getWeb3
         .then(async results => {
           await this.setState({
@@ -166,6 +126,8 @@ export default class Idols extends React.Component {
           });        
         }).then(()=>{
           this.instantiateContract();
+        }).catch(()=>{
+          alert("以太网连接错误");
         })
 
       
@@ -178,6 +140,19 @@ export default class Idols extends React.Component {
       handleNameChange(event){
     console.log(event.target.value);
     this.setState({ownerName: event.target.value});
+  }
+
+
+
+
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+
+
+  handleShow() {
+    this.setState({ show: true });
   }
 
   mouseOver(i) {
@@ -240,6 +215,16 @@ export default class Idols extends React.Component {
       'margin-right': 'auto',
     }
 
+
+        let jstyle={
+      'background-color':"pink"
+    }
+
+    let istyle={
+      'width':'100px',
+      'height':'100px'
+    }
+
     self=this;
 
     function tociclednumber(num) {
@@ -251,21 +236,42 @@ export default class Idols extends React.Component {
 
     function computeowner(ownername) {
       if (ownername == null || ownername === '') {
-        return <b>No Guardian</b>
+        return <b>未创始</b>
       }
-      return <span><b>Guardian</b> {ownername}</span>
+      return <span><b>独家创始人:</b> {ownername}</span>
     }
 
     return (
       <div>
-        <h1>{this.contract}</h1>
+                      <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>玩法说明</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <h3>游戏规则</h3>
+                    <p><strong>偶像的身价是怎样计算的？</strong></p><p>每次被Pick，身价自动上涨1.2倍。每位偶像的起始身价为1mEH(约人民币20元，须以以太币当日价格为准)。</p>
+                    <p><strong>怎样成为创始人？</strong></p><p>付出与偶像身价等价的以太币，则可以拥有独家创始人身份。</p>
+                    <p><strong>如果创始人身份被抢，我该怎么办？</strong></p><p>您之前付出的金额会被全部退还，同时，您会收获偶像身价的10%作为奖励。</p>
+                    <h3>为什么使用区块链？</h3>
+                    <p><strong>什么是区块链？</strong></p><p>区块链技术是一种分布式储存并防止篡改数据的技术，分布在全球数以万计的储存和纠错节点为区块链提供计算支持，个别节点下线不影响整体区块链网络的持续运行，保证创始人身份储存在区块链上永久且无法篡改。
+                    区块链还具有去中心化特征，节点之间互相平等，不存在任何中心。因此智能合约生成之后，没有中心机构能够进行幕后操作，篡改偶像身价。</p>
+                    <p><strong>为什么应用区块链在这种场景？</strong><p>您的创始人身份将被永远记录在区块链上，无法篡改，永久生效。同时，偶像的身价仅由观众决定，实现真正去中心化的人气评级。</p></p>
+                    <p><strong>可查询智能合约地址</strong><p>0x3eeb39bb0e0642fcbbd41c3fbb67c6108369d573</p></p>
+                    <h3>使用方法</h3>
+                    <p>请您安装<a href="https://metamask.io">MetaMask</a>钱包插件，并连接以太主网络，只要钱包中有足够的以太币，即可进行交易。</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleClose.bind(this)}>关闭</Button>
+                    </Modal.Footer>
+                </Modal>
+
         <div>
           <Grid>
             <Row>
               {this.state.fake_data.map(function(d, idx){
                 const tooltip = (
                   <Tooltip id="tooltip">
-                    <strong>Address</strong> {d.ownerAddress}
+                    <strong>地址:</strong> {d.ownerAddress}
                   </Tooltip>
                 );
                 return (<Col xs={6} md={4}>
@@ -277,15 +283,14 @@ export default class Idols extends React.Component {
                   <OverlayTrigger placement="bottom" overlay={tooltip}>
                     <p>{computeowner(d.ownerName)}</p>
                   </OverlayTrigger>
-                  <p><b>Value</b> {d.value} mETH</p>
-                  <p><b>Sell Price</b> {d.sellPrice} mETH</p>
+                  <p><b>身价</b> {d.sellPrice} mETH</p>
                   <p>
-                    <input placeholder="Your name" id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
+                    <input placeholder="创始人名字" id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
                   </p>
 
                   <div style={centerbuttonouter}>
                       <Button style={bstyle} onClick={buy_func.bind(null,d.id)}>
-                          Guard
+                          Pick Me Up!
                       </Button>
                   </div>
 
@@ -297,6 +302,20 @@ export default class Idols extends React.Component {
             </Row>
           </Grid>
         </div>
+              <div style={{'position': 'fixed','z-index':-1, 
+'height': '100px',
+'width': '100px',
+'bottom': '90px',
+'right': '50px'}}>
+            <Button style={{'box-shadow':'0px 0px 10px #000','width':'100px','height':'100px','background-color':'white','border-radius':'50%'}} onClick={this.handleShow.bind(this)} >玩法说明</Button>
+            </div>
+
+
+
+
+            <Jumbotron style={jstyle}>
+
+            </Jumbotron>
       </div>
     )
   }
