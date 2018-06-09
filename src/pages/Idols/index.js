@@ -5,8 +5,10 @@ import MyIdolContract from '../../../node_modules/myidol/build/contracts/MyIdol.
 
 
 import {Modal, Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail, Tooltip, OverlayTrigger} from 'react-bootstrap';
-
-
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-120547267-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
+ReactGA.ga('send', 'pageview', '/');
 
 export default class Idols extends React.Component {
     constructor(props) {
@@ -15,7 +17,8 @@ export default class Idols extends React.Component {
        this.state = {
          admin: false,
          isHover: [false]*100,
-         show:false
+         show:false,
+         with_eth:true
        }
     }
 
@@ -75,7 +78,8 @@ export default class Idols extends React.Component {
                 }
             });
         }).catch(()=>{
-          alert('找不到智能合约，请确认您在以太坊主网络上');
+          this.setState({with_eth:true});
+          alert('请确认您在以太坊主网络上, 请登录metamask.io下载metamask, 并选择Main Ethereum');
         })
     }
 
@@ -101,8 +105,9 @@ export default class Idols extends React.Component {
             value:priceInWei,
             gas:1000000
           }).then(result => {
-            alert("successful, you may need to wait for a while before you can see the update. It may fail because of concurrent transactions. The name of the buyer who win the bid will be shown. Transaction takes about 15 seconds to finish. Please refresh later.");
+            // alert("successful, you may need to wait for a while before you can see the update. It may fail because of concurrent transactions. The name of the buyer who win the bid will be shown. Transaction takes about 15 seconds to finish. Please refresh later.");
             //refresh page
+            alert("交易成功提交！请等待交易完成后，重新刷新页面。如果其他用户手速比您更快，可能导致交易失败。")
           }).catch(()=>{
             alert("交易失败");
           })
@@ -128,6 +133,8 @@ this.setState({fake_data:[]});
           this.instantiateContract();
         }).catch(()=>{
           alert("以太网连接错误");
+          self.setState({with_eth:'false'});
+          console.log(self.state.with_eth);
         })
 
       
@@ -241,7 +248,9 @@ this.setState({fake_data:[]});
       return <span><b>独家创始人:</b> {ownername}</span>
     }
 
-    return (
+
+
+    let with_eth_display= (
       <div>
                       <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
                     <Modal.Header closeButton>
@@ -249,7 +258,7 @@ this.setState({fake_data:[]});
                     </Modal.Header>
                     <Modal.Body>
                     <h3>游戏规则</h3>
-                    <p><strong>偶像的身价是怎样计算的？</strong></p><p>每次被Pick，身价自动上涨1.2倍。每位偶像的起始身价为1mEH(约人民币20元，须以以太币当日价格为准)。</p>
+                    <p><strong>偶像的身价是怎样计算的？</strong></p><p>每次被Pick，身价自动上涨1.2倍。每位偶像的起始身价为1mEH(约人民币2元，须以以太币当日价格为准)。</p>
                     <p><strong>怎样成为创始人？</strong></p><p>付出与偶像身价等价的以太币，则可以拥有独家创始人身份。</p>
                     <p><strong>如果创始人身份被抢，我该怎么办？</strong></p><p>您之前付出的金额会被全部退还，同时，您会收获偶像身价的10%作为奖励。</p>
                     <h3>为什么使用区块链？</h3>
@@ -317,6 +326,11 @@ this.setState({fake_data:[]});
 
             </Jumbotron>
       </div>
-    )
+    );
+
+    let without_eth_display=<p>Alice</p>;
+    return self.state.with_eth?with_eth_display:without_eth_display;
+
+
   }
 }
