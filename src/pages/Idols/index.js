@@ -2,7 +2,7 @@ import React from 'react';
 import getWeb3 from '../../utils/getWeb3'
 
 import MyIdolContract from '../../../node_modules/myidol/build/contracts/MyIdol.json'
-
+import translator from '../../utils/translator'
 
 import {Modal, Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import ReactGA from 'react-ga';
@@ -79,7 +79,7 @@ export default class Idols extends React.Component {
             });
         }).catch(()=>{
           this.setState({with_eth:true});
-          alert('请确认您在以太坊主网络上, 请登录metamask.io下载metamask, 并选择Main Ethereum');
+          alert(translator.translate('ALERT_text'));
         })
     }
 
@@ -88,12 +88,11 @@ export default class Idols extends React.Component {
       self=this;
       console.log(this.state.ownerName);
       if(!this.state.ownerName){
-        alert("名字不能为空");
+        alert(translator.translate('IDOL_nameEmptyError'));
         return ;
       }
         console.log(idol_id);
         self = this;
-        var ownerName = "Owner Name"; //temporary
 
         this.MyIdolContract.getIdol(idol_id).then(idolData => {
           console.log(idolData);
@@ -107,9 +106,9 @@ export default class Idols extends React.Component {
           }).then(result => {
             // alert("successful, you may need to wait for a while before you can see the update. It may fail because of concurrent transactions. The name of the buyer who win the bid will be shown. Transaction takes about 15 seconds to finish. Please refresh later.");
             //refresh page
-            alert("交易成功提交！请等待交易完成后，重新刷新页面。如果其他用户手速比您更快，可能导致交易失败。")
+            alert(translator.translate('IDOL_transactionSubmitted'))
           }).catch(()=>{
-            alert("交易失败");
+            alert(translator.translate('IDOL_transactionError'));
           })
         });
     }
@@ -118,10 +117,11 @@ export default class Idols extends React.Component {
     // initialize(){
     componentWillMount() {
         const self=this;
+        const { match, lang } = this.props;
+        translator.setLocale(lang);
 
-this.setState({fake_data:[]});
-        getWeb3
-        .then(async results => {
+        this.setState({fake_data:[]});
+        getWeb3.then(async results => {
           await this.setState({
             web3: results.web3
           });
@@ -132,7 +132,7 @@ this.setState({fake_data:[]});
         }).then(()=>{
           this.instantiateContract();
         }).catch(()=>{
-          alert("以太网连接错误");
+          alert(translator.translate('IDOL_connectionError'));
           self.setState({with_eth:'false'});
           console.log(self.state.with_eth);
         })
@@ -245,34 +245,34 @@ this.setState({fake_data:[]});
       if (ownername == null || ownername === '') {
         return <b>未创始</b>
       }
-      return <span><b>独家创始人:</b> {ownername}</span>
+      return <span><b>{translator.translate('IDOL_ownerNameLabel')}:</b> {ownername}</span>
     }
 
 
 
     let with_eth_display= (
       <div>
-                      <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>玩法说明</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                    <h3>游戏规则</h3>
-                    <p><strong>偶像的身价是怎样计算的？</strong></p><p>每次被Pick，身价自动上涨1.2倍。每位偶像的起始身价为1mEH(约人民币2元，须以以太币当日价格为准)。</p>
-                    <p><strong>怎样成为创始人？</strong></p><p>付出与偶像身价等价的以太币，则可以拥有独家创始人身份。</p>
-                    <p><strong>如果创始人身份被抢，我该怎么办？</strong></p><p>您之前付出的金额会被全部退还，同时，您会收获偶像身价的10%作为奖励。</p>
-                    <h3>为什么使用区块链？</h3>
-                    <p><strong>什么是区块链？</strong></p><p>区块链技术是一种分布式储存并防止篡改数据的技术，分布在全球数以万计的储存和纠错节点为区块链提供计算支持，个别节点下线不影响整体区块链网络的持续运行，保证创始人身份储存在区块链上永久且无法篡改。
-                    区块链还具有去中心化特征，节点之间互相平等，不存在任何中心。因此智能合约生成之后，没有中心机构能够进行幕后操作，篡改偶像身价。</p>
-                    <p><strong>为什么应用区块链在这种场景？</strong><p>您的创始人身份将被永远记录在区块链上，无法篡改，永久生效。同时，偶像的身价仅由观众决定，实现真正去中心化的人气评级。</p></p>
-                    <p><strong>可查询智能合约地址</strong><p>0x3eeb39bb0e0642fcbbd41c3fbb67c6108369d573</p></p>
-                    <h3>使用方法</h3>
-                    <p>请您安装<a href="https://metamask.io">MetaMask</a>钱包插件，并连接以太主网络，只要钱包中有足够的以太币，即可进行交易。</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.handleClose.bind(this)}>关闭</Button>
-                    </Modal.Footer>
-                </Modal>
+          <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
+              <Modal.Header closeButton>
+                  <Modal.Title>{translator.translate('INSTRUCTIONS_header')}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+              <h3>{translator.translate('INSTRUCTIONS_section1Header')}</h3>
+              <p><strong>偶像的身价是怎样计算的？</strong></p><p>每次被Pick，身价自动上涨1.2倍。每位偶像的起始身价为1mEH(约人民币2元，须以以太币当日价格为准)。</p>
+              <p><strong>怎样成为创始人？</strong></p><p>付出与偶像身价等价的以太币，则可以拥有独家创始人身份。</p>
+              <p><strong>如果创始人身份被抢，我该怎么办？</strong></p><p>您之前付出的金额会被全部退还，同时，您会收获偶像身价的10%作为奖励。</p>
+              <h3>{translator.translate('INSTRUCTIONS_section2Header')}</h3>
+              <p><strong>什么是区块链？</strong></p><p>区块链技术是一种分布式储存并防止篡改数据的技术，分布在全球数以万计的储存和纠错节点为区块链提供计算支持，个别节点下线不影响整体区块链网络的持续运行，保证创始人身份储存在区块链上永久且无法篡改。
+              区块链还具有去中心化特征，节点之间互相平等，不存在任何中心。因此智能合约生成之后，没有中心机构能够进行幕后操作，篡改偶像身价。</p>
+              <p><strong>为什么应用区块链在这种场景？</strong><p>您的创始人身份将被永远记录在区块链上，无法篡改，永久生效。同时，偶像的身价仅由观众决定，实现真正去中心化的人气评级。</p></p>
+              <p><strong>可查询智能合约地址</strong><p>0x3eeb39bb0e0642fcbbd41c3fbb67c6108369d573</p></p>
+              <h3>{translator.translate('INSTRUCTIONS_section3Header')}</h3>
+              <p>{translator.translate('INSTRUCTIONS_section3Content1')}<a href="https://metamask.io">MetaMask</a>{translator.translate('INSTRUCTIONS_section3Content2')}</p>
+              </Modal.Body>
+              <Modal.Footer>
+                  <Button onClick={this.handleClose.bind(this)}>{translator.translate('INSTRUCTIONS_close')}</Button>
+              </Modal.Footer>
+          </Modal>
 
         <div>
           <Grid>
@@ -280,7 +280,7 @@ this.setState({fake_data:[]});
               {this.state.fake_data.map(function(d, idx){
                 const tooltip = (
                   <Tooltip id="tooltip">
-                    <strong>地址:</strong> {d.ownerAddress}
+                    <strong>translator.translate('IDOL_ownerAddressLabel'):</strong> {d.ownerAddress}
                   </Tooltip>
                 );
                 return (<Col xs={6} md={4}>
@@ -292,14 +292,14 @@ this.setState({fake_data:[]});
                   <OverlayTrigger placement="bottom" overlay={tooltip}>
                     <p>{computeowner(d.ownerName)}</p>
                   </OverlayTrigger>
-                  <p><b>身价</b> {d.sellPrice} mETH</p>
+                  <p><b>{translator.translate('IDOL_valueLabel')}</b> {d.sellPrice} mETH</p>
                   <p>
-                    <input placeholder="创始人名字" id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
+                    <input placeholder={translator.translate('IDOL_buyerNamePlaceholder')} id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
                   </p>
 
                   <div style={centerbuttonouter}>
                       <Button style={bstyle} onClick={buy_func.bind(null,d.id)}>
-                          Pick Me Up!
+                          {translator.translate('IDOL_buyButton')}
                       </Button>
                   </div>
 
@@ -311,20 +311,20 @@ this.setState({fake_data:[]});
             </Row>
           </Grid>
         </div>
-              <div style={{'position': 'fixed','z-index':-1, 
-'height': '100px',
-'width': '100px',
-'bottom': '90px',
-'right': '50px'}}>
-            <Button style={{'box-shadow':'0px 0px 10px #000','width':'100px','height':'100px','background-color':'white','border-radius':'50%'}} onClick={this.handleShow.bind(this)} >玩法说明</Button>
-            </div>
+        <div style={{'position': 'fixed','z-index':-1, 
+            'height': '100px',
+            'width': '100px',
+            'bottom': '90px',
+            'right': '50px'}}>
+            <Button style={{'box-shadow':'0px 0px 10px #000','width':'100px','height':'100px','background-color':'white','border-radius':'50%'}} onClick={this.handleShow.bind(this)} >{translator.translate('BUTTON_label')}</Button>
+        </div>
 
 
 
 
-            <Jumbotron style={jstyle}>
+        <Jumbotron style={jstyle}>
 
-            </Jumbotron>
+        </Jumbotron>
       </div>
     );
 

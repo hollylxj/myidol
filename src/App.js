@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import MyIdolContract from '../node_modules/myidol/build/contracts/MyIdol.json'
+import translator from './utils/translator'
 import getWeb3 from './utils/getWeb3'
 
 import logo from './logo.jpg'
@@ -149,16 +150,17 @@ class App extends Component {
     };
 
 
-let eth_detect = this.state.eth_detect?"./on.jpg":"./off.jpg";
+    let eth_detect = this.state.eth_detect ? "./on.jpg" : "./off.jpg";
 
-     var any_alert = this.state.eth_detect?null:<Alert bsStyle="warning">
-  <strong>Warning:请使用以太坊主网络</strong></Alert>;
+    var any_alert = this.state.eth_detect ? null : <Alert bsStyle="warning">
+      <strong>Warning:{translator.translate('HOME_warning')}</strong>
+    </Alert>;
 
 
     return (
 
         <div>
-        <span style={pStyle} >地址: {this.state.account}</span>
+        <span style={pStyle} >{translator.translate('HOME_activeAccount')}: {this.state.account}</span>
           <Router basename={'/produce101/'}>
             <div className="App">
 
@@ -177,7 +179,7 @@ let eth_detect = this.state.eth_detect?"./on.jpg":"./off.jpg";
   </p>
 
   <p>
-    你的创始人身份，由区块链永远守护
+    {translator.translate('HOME_description')}
   </p>
 
             </Jumbotron>
@@ -191,7 +193,7 @@ let eth_detect = this.state.eth_detect?"./on.jpg":"./off.jpg";
 
                 <Switch>
                   <Route path="/produce101/admin" render={(props) => <Admin {...props} contract={this.state.MyIdolInstance} />} />
-                  <Route path="/produce101/idols" render={(props) => <Idols {...props} />} />
+                  <Route path="/produce101/idols" render={(props) => <Idols {...props} lang={translator.getLocale()}/>} />
                   <Route path="/" render={(props) => <Idols {...props} />} />
                   <Route path="/no" render={(props)=>
                     <Grid>
