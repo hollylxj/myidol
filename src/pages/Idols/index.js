@@ -2,7 +2,7 @@ import React from 'react';
 import getWeb3 from '../../utils/getWeb3'
 
 import MyIdolContract from '../../../node_modules/myidol/build/contracts/MyIdol.json'
-
+import translator from '../../utils/translator'
 
 import {Modal, Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import ReactGA from 'react-ga';
@@ -79,7 +79,7 @@ export default class Idols extends React.Component {
             });
         }).catch(()=>{
           this.setState({with_eth:true});
-          alert('请确认您在以太坊主网络上, 请登录metamask.io下载metamask, 并选择Main Ethereum');
+          alert(translator.translate('ALERT_text'));
         })
     }
 
@@ -88,12 +88,11 @@ export default class Idols extends React.Component {
       self=this;
       console.log(this.state.ownerName);
       if(!this.state.ownerName){
-        alert("名字不能为空");
+        alert(translator.translate('IDOL_nameEmptyError'));
         return ;
       }
         console.log(idol_id);
         self = this;
-        var ownerName = "Owner Name"; //temporary
 
         this.MyIdolContract.getIdol(idol_id).then(idolData => {
           console.log(idolData);
@@ -107,9 +106,9 @@ export default class Idols extends React.Component {
           }).then(result => {
             // alert("successful, you may need to wait for a while before you can see the update. It may fail because of concurrent transactions. The name of the buyer who win the bid will be shown. Transaction takes about 15 seconds to finish. Please refresh later.");
             //refresh page
-            alert("交易成功提交！请等待交易完成后，重新刷新页面。如果其他用户手速比您更快，可能导致交易失败。")
+            alert(translator.translate('IDOL_transactionSubmitted'))
           }).catch(()=>{
-            alert("交易失败");
+            alert(translator.translate('IDOL_transactionError'));
           })
         });
     }
@@ -118,10 +117,11 @@ export default class Idols extends React.Component {
     // initialize(){
     componentWillMount() {
         const self=this;
+        const { match, lang } = this.props;
+        translator.setLocale(lang);
 
-this.setState({fake_data:[]});
-        getWeb3
-        .then(async results => {
+        this.setState({fake_data:[]});
+        getWeb3.then(async results => {
           await this.setState({
             web3: results.web3
           });
@@ -132,7 +132,7 @@ this.setState({fake_data:[]});
         }).then(()=>{
           this.instantiateContract();
         }).catch(()=>{
-          alert("以太网连接错误");
+          alert(translator.translate('IDOL_connectionError'));
           self.setState({with_eth:'false'});
           console.log(self.state.with_eth);
         })
@@ -245,35 +245,65 @@ this.setState({fake_data:[]});
       if (ownername == null || ownername === '') {
         return <b>未创始</b>
       }
-      return <span><b>独家创始人:</b> {ownername}</span>
+      return <span><b>{translator.translate('IDOL_ownerNameLabel')}:</b> {ownername}</span>
     }
 
 
 
     let with_eth_display= (
       <div>
-                      <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>玩法说明</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
 
-
-                    <h3>游戏规则</h3>
-                                           <p><strong>用什么来购买？</strong></p><p>基于以太坊合约哦，当然是用以太坊（一种虚拟货币）来购买啦！ 注意下文以太坊简称ETH了哦。</p>
-                       <p><strong>什么是创造101？创始人是什么？这些人是谁？</strong></p><p>亲，你out了！创造101是腾讯制作的当下最火选秀节目，借此机会给您安利 :) 这些可爱的小姐姐们就是本游戏的偶像了，她们的粉丝称为创始人。</p>
-                                              <p><strong>偶像的身价是怎样计算的？</strong></p><p>付出与偶像身价等价的以太币，则可以暂时拥有独家创始人身份，输入的创始人名字会显示在相应偶像下面，直到有人出更高的价格把创始权买走。</p>
-                       <p><strong>怎样成为创始人？</strong></p><p>基于以太坊合约哦，当然是用以太坊（一种虚拟货币）来购买啦！ 注意下文以太坊简称ETH了哦。</p>
-                        <p><strong>如果创始人身份被别人买走，我该怎么办？</strong></p><p>您之前付出的金额会被全部退还，同时，您会收获偶像身价的10%作为奖励。当然，如果您也可以出更高的价格把她的创始权买回来。</p>
-                       <p><strong>为什么Metamask上面显示的总价那么高？</strong></p><p>由于所有在区块链上记录的交易都有小额手续费，Metamask会计算出一个最高的手续费并显示总额。然而事实上并不会被收取那么高的手续费。虽然手续费的数目是浮动的，但一般会在0.0003～0.0004 ETH 左右（0.18～0.24USD）</p>
-           <p><strong>我买了梦中的她的创始权，为什么没有显示出来？</strong></p><p>有可能1.时间太短了区块链还没有被挖掘 2. 交易没通过被别人抢先了（不会被扣ETH）3. 页面没刷新请手动刷新 4. 您喜欢的人太抢手，已经被别人以更高的价格买走了（您会赚到ETH哦）</p>
-
-
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.handleClose.bind(this)}>关闭</Button>
-                    </Modal.Footer>
-                </Modal>
+          <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
+              <Modal.Header closeButton>
+                  <Modal.Title>{translator.translate('INSTRUCTIONS_header')}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+              <h3>{translator.translate('INSTRUCTIONS_section1Header')}</h3>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question1')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer1')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question2')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer2')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question3')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer3')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question4')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer4')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question5')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer5')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question6')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer6')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question7')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer7')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question8')}</strong></p>
+              <ol>
+                <li>
+                  {translator.translate('INSTRUCTIONS_section1Answer8_1')}
+                  <a href={translator.translate('INSTRUCTIONS_section1Answer8_1_link')}>{translator.translate('INSTRUCTIONS_section1Answer8_1_link')}</a>
+                </li>
+                <li>{translator.translate('INSTRUCTIONS_section1Answer8_2')}</li>
+                <li>
+                  {translator.translate('INSTRUCTIONS_section1Answer8_3_1')}
+                  <br/>
+                  {translator.translate('INSTRUCTIONS_section1Answer8_3_2')}
+                  <a href={translator.translate('INSTRUCTIONS_section1Answer8_3_link')}>{translator.translate('INSTRUCTIONS_section1Answer8_3_link')}</a>
+                  <br/>
+                  {translator.translate('INSTRUCTIONS_section1Answer8_3_3')}
+                </li>
+                <li>{translator.translate('INSTRUCTIONS_section1Answer8_4')}</li>
+              </ol>
+              <h3>{translator.translate('INSTRUCTIONS_section2Header')}</h3>
+              <p><strong>{translator.translate('INSTRUCTIONS_section2Question1')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section2Answer1')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section2Question2')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section2Answer2')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section2Question3')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section2Answer3')}</p>
+              <h3>{translator.translate('INSTRUCTIONS_section3Header')}</h3>
+              <p>{translator.translate('INSTRUCTIONS_section3Content1')}<a href="https://metamask.io">MetaMask</a>{translator.translate('INSTRUCTIONS_section3Content2')}</p>
+              </Modal.Body>
+              <Modal.Footer>
+                  <Button onClick={this.handleClose.bind(this)}>{translator.translate('INSTRUCTIONS_close')}</Button>
+              </Modal.Footer>
+          </Modal>
 
         <div>
           <Grid>
@@ -281,7 +311,7 @@ this.setState({fake_data:[]});
               {this.state.fake_data.map(function(d, idx){
                 const tooltip = (
                   <Tooltip id="tooltip">
-                    <strong>地址:</strong> {d.ownerAddress}
+                    <strong>translator.translate('IDOL_ownerAddressLabel'):</strong> {d.ownerAddress}
                   </Tooltip>
                 );
                 return (<Col xs={6} md={4}>
@@ -293,14 +323,14 @@ this.setState({fake_data:[]});
                   <OverlayTrigger placement="bottom" overlay={tooltip}>
                     <p>{computeowner(d.ownerName)}</p>
                   </OverlayTrigger>
-                  <p><b>身价</b> {d.sellPrice} mETH</p>
+                  <p><b>{translator.translate('IDOL_valueLabel')}</b> {d.sellPrice} mETH</p>
                   <p>
-                    <input placeholder="创始人名字" id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
+                    <input placeholder={translator.translate('IDOL_buyerNamePlaceholder')} id="myname" type="text" onChange={self.handleNameChange.bind(self)}></input>
                   </p>
 
                   <div style={centerbuttonouter}>
                       <Button style={bstyle} onClick={buy_func.bind(null,d.id)}>
-                          Pick Me Up!
+                          {translator.translate('IDOL_buyButton')}
                       </Button>
                   </div>
 
@@ -312,20 +342,20 @@ this.setState({fake_data:[]});
             </Row>
           </Grid>
         </div>
-              <div style={{'position': 'fixed','z-index':-1, 
-'height': '100px',
-'width': '100px',
-'bottom': '90px',
-'right': '50px'}}>
-            <Button style={{'box-shadow':'0px 0px 10px #000','width':'100px','height':'100px','background-color':'white','border-radius':'50%'}} onClick={this.handleShow.bind(this)} >玩法说明</Button>
-            </div>
+        <div style={{'position': 'fixed','z-index':-1, 
+            'height': '100px',
+            'width': '100px',
+            'bottom': '90px',
+            'right': '50px'}}>
+            <Button style={{'box-shadow':'0px 0px 10px #000','width':'100px','height':'100px','background-color':'white','border-radius':'50%'}} onClick={this.handleShow.bind(this)} >{translator.translate('BUTTON_label')}</Button>
+        </div>
 
 
 
 
-            <Jumbotron style={jstyle}>
+        <Jumbotron style={jstyle}>
 
-            </Jumbotron>
+        </Jumbotron>
       </div>
     );
 

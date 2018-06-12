@@ -77,6 +77,12 @@ ChanCore
 https://rinkeby.etherscan.io/tx/0x144048956e9d25c5cbbd3091a416c9bf06c5086acbbd8f5ca03f25b94b90b5a2
 
 "networks": {
+	"1": {
+		"events": {},
+		"links": {},
+		"address": "0x3eeb39bb0e0642fcbbd41c3fbb67c6108369d573",
+		"transactionHash": "0x3fc7106a48dacacd747fdc6201df0585e32d738dcfd4dc4c726b6cce506bfe1c"
+	},
 	"4": {
 		"events": {},
 		"links": {},
