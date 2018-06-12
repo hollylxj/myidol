@@ -258,14 +258,44 @@ export default class Idols extends React.Component {
               </Modal.Header>
               <Modal.Body>
               <h3>{translator.translate('INSTRUCTIONS_section1Header')}</h3>
-              <p><strong>偶像的身价是怎样计算的？</strong></p><p>每次被Pick，身价自动上涨1.2倍。每位偶像的起始身价为1mEH(约人民币2元，须以以太币当日价格为准)。</p>
-              <p><strong>怎样成为创始人？</strong></p><p>付出与偶像身价等价的以太币，则可以拥有独家创始人身份。</p>
-              <p><strong>如果创始人身份被抢，我该怎么办？</strong></p><p>您之前付出的金额会被全部退还，同时，您会收获偶像身价的10%作为奖励。</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question1')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer1')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question2')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer2')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question3')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer3')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question4')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer4')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question5')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer5')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question6')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer6')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question7')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section1Answer7')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section1Question8')}</strong></p>
+              <ol>
+                <li>
+                  {translator.translate('INSTRUCTIONS_section1Answer8_1')}
+                  <a href={translator.translate('INSTRUCTIONS_section1Answer8_1_link')}>{translator.translate('INSTRUCTIONS_section1Answer8_1_link')}</a>
+                </li>
+                <li>{translator.translate('INSTRUCTIONS_section1Answer8_2')}</li>
+                <li>
+                  {translator.translate('INSTRUCTIONS_section1Answer8_3_1')}
+                  <br/>
+                  {translator.translate('INSTRUCTIONS_section1Answer8_3_2')}
+                  <a href={translator.translate('INSTRUCTIONS_section1Answer8_3_link')}>{translator.translate('INSTRUCTIONS_section1Answer8_3_link')}</a>
+                  <br/>
+                  {translator.translate('INSTRUCTIONS_section1Answer8_3_3')}
+                </li>
+                <li>{translator.translate('INSTRUCTIONS_section1Answer8_4')}</li>
+              </ol>
               <h3>{translator.translate('INSTRUCTIONS_section2Header')}</h3>
-              <p><strong>什么是区块链？</strong></p><p>区块链技术是一种分布式储存并防止篡改数据的技术，分布在全球数以万计的储存和纠错节点为区块链提供计算支持，个别节点下线不影响整体区块链网络的持续运行，保证创始人身份储存在区块链上永久且无法篡改。
-              区块链还具有去中心化特征，节点之间互相平等，不存在任何中心。因此智能合约生成之后，没有中心机构能够进行幕后操作，篡改偶像身价。</p>
-              <p><strong>为什么应用区块链在这种场景？</strong><p>您的创始人身份将被永远记录在区块链上，无法篡改，永久生效。同时，偶像的身价仅由观众决定，实现真正去中心化的人气评级。</p></p>
-              <p><strong>可查询智能合约地址</strong><p>0x3eeb39bb0e0642fcbbd41c3fbb67c6108369d573</p></p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section2Question1')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section2Answer1')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section2Question2')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section2Answer2')}</p>
+              <p><strong>{translator.translate('INSTRUCTIONS_section2Question3')}</strong></p>
+              <p>{translator.translate('INSTRUCTIONS_section2Answer3')}</p>
               <h3>{translator.translate('INSTRUCTIONS_section3Header')}</h3>
               <p>{translator.translate('INSTRUCTIONS_section3Content1')}<a href="https://metamask.io">MetaMask</a>{translator.translate('INSTRUCTIONS_section3Content2')}</p>
               </Modal.Body>

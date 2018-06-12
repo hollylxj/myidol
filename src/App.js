@@ -52,6 +52,8 @@ class App extends Component {
     .catch(() => {
       console.log('Error finding web3.')
     })
+
+    this.setState({lang:translator.getLocale()})
   }
 
   instantiateContract() {
@@ -124,6 +126,15 @@ class App extends Component {
     })
   }
 
+  setLanguageToEn(){
+    translator.setLocale('en');
+    this.setState({lang:'en'});
+  }
+
+  setLanguageToZh(){
+    translator.setLocale('zh');
+    this.setState({lang:'zh'});
+  }
 
   render() {
 
@@ -153,7 +164,7 @@ class App extends Component {
     let eth_detect = this.state.eth_detect ? "./on.jpg" : "./off.jpg";
 
     var any_alert = this.state.eth_detect ? null : <Alert bsStyle="warning">
-      <strong>Warning:{translator.translate('HOME_warning')}</strong>
+      <strong>Warning: {translator.translate('HOME_warning')}</strong>
     </Alert>;
 
 
@@ -167,20 +178,25 @@ class App extends Component {
              {any_alert} 
              
         
-        
+            <Button bsStyle="primary" id="languageButton" disabled={this.state.lang === 'en'} onClick={this.setLanguageToEn.bind(this)}>
+              English
+            </Button>
+            <Button bsStyle="primary" id="languageButton" disabled={this.state.lang === 'zh'} onClick={this.setLanguageToZh.bind(this)}>
+              中文
+            </Button>
             <Jumbotron style={jstyle}>
-            <img style={istyle} src={require('./logo.jpg')}/>
-            <br/>
-            <br/>
+              <img style={istyle} src={require('./logo.jpg')}/>
+              <br/>
+              <br/>
 
 
-  <p>
-    
-  </p>
+              <p>
+                
+              </p>
 
-  <p>
-    {translator.translate('HOME_description')}
-  </p>
+              <p>
+                {translator.translate('HOME_description')}
+              </p>
 
             </Jumbotron>
 
