@@ -45,9 +45,17 @@ class App extends Component {
       this.setState({
         web3: results.web3
       })
-
-      // Instantiate contract once web3 provided.
+      console.log(results,'debug');
+      if(results.web3.currentProvider.host=='http://127.0.0.1:9545'){
+            alert('please install metamask');
+            return;
+          }
+      else{
+              // Instantiate contract once web3 provided.
       this.instantiateContract()
+      }
+
+
     })
     .catch(() => {
       console.log('Error finding web3.')

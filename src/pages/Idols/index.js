@@ -126,11 +126,15 @@ export default class Idols extends React.Component {
             web3: results.web3
           });
           // Get accounts.
-          results.web3.eth.getAccounts((error, accounts) => {
+          if(results.web3.currentProvider.host=='http://127.0.0.1:9545'){
+            alert('please install metamask');
+          }
+          else{
+            results.web3.eth.getAccounts((error, accounts) => {
             this.setState({account:accounts[0]});
-          });        
-        }).then(()=>{
-          this.instantiateContract();
+          });
+          this.instantiateContract(); }
+                 
         }).catch(()=>{
           alert(translator.translate('IDOL_connectionError'));
           self.setState({with_eth:'false'});
