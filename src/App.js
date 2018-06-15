@@ -41,11 +41,11 @@ class App extends Component {
     // See utils/getWeb3 for more info.
 
     getWeb3
-    .then(results => {
+    .then(async results => {
       this.setState({
         web3: results.web3
       })
-      console.log(results,'debug');
+      await console.log(results,'debug');
       if(results.web3.currentProvider.host=='http://127.0.0.1:9545'){
             alert('please install metamask');
             return;
